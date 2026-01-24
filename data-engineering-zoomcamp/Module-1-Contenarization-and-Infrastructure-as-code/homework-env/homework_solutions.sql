@@ -1,0 +1,57 @@
+-------------------
+-- -- QUESTION 3
+-- SELECT
+-- 	COUNT(*)
+-- FROM
+-- 	PUBLIC.GREEN_TRIPS_DATA
+-- WHERE
+-- 	LPEP_PICKUP_DATETIME BETWEEN '2025-11-01' AND '2025-12-01'
+-- 	AND "trip_distance" <= 1;
+------------------
+-- -- QUESTION 4
+-- SELECT
+-- 	LPEP_PICKUP_DATETIME::DATE,
+-- 	MAX(TRIP_DISTANCE)
+-- FROM
+-- 	PUBLIC.GREEN_TRIPS_DATA
+-- WHERE
+-- 	TRIP_DISTANCE < 100
+-- GROUP BY
+-- 	LPEP_PICKUP_DATETIME::DATE
+-- ORDER BY
+-- 	MAX(TRIP_DISTANCE) DESC
+-- LIMIT
+-- 	1;
+-----------------------
+-- QUESTION 5
+-- SELECT
+-- 	Z."Zone",
+-- 	SUM(T."total_amount") AS TOTAL_SUM
+-- FROM
+-- 	GREEN_TRIPS_DATA AS T
+-- 	JOIN GREEN_TRIPS_TAXI_ZONE_LOOKUP AS Z ON T."PULocationID" = Z."LocationID"
+-- WHERE
+-- 	T.LPEP_PICKUP_DATETIME::DATE = '2025-11-18'
+-- GROUP BY
+-- 	Z."Zone"
+-- ORDER BY
+-- 	TOTAL_SUM DESC
+-- LIMIT
+-- 	1;
+------------
+-- QUESTION 6
+-- SELECT
+-- 	ZDO."Zone" AS DROPOFF_ZONE,
+-- 	MAX(T."tip_amount") AS MAX_TIP
+-- FROM
+-- 	GREEN_TRIPS_DATA AS T
+-- 	JOIN GREEN_TRIPS_TAXI_ZONE_LOOKUP AS ZPU ON T."PULocationID" = ZPU."LocationID"
+-- 	JOIN GREEN_TRIPS_TAXI_ZONE_LOOKUP AS ZDO ON T."DOLocationID" = ZDO."LocationID"
+-- WHERE
+-- 	ZPU."Zone" = 'East Harlem North'
+-- GROUP BY
+-- 	ZDO."Zone"
+-- ORDER BY
+-- 	MAX_TIP DESC
+-- LIMIT
+-- 	1;

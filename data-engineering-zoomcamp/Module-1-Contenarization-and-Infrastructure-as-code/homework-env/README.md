@@ -115,20 +115,53 @@ Which was the pick up day with the longest trip distance? Only consider trips wi
 
 Use the pick up time for your calculations.
 
-- 2025-11-14
+- 2025-11-14 ✅
 - 2025-11-20
 - 2025-11-23
 - 2025-11-25
+
+```
+SELECT
+	LPEP_PICKUP_DATETIME::DATE,
+	MAX(TRIP_DISTANCE)
+FROM
+	PUBLIC.GREEN_TRIPS_DATA
+WHERE
+	TRIP_DISTANCE < 100
+GROUP BY
+	LPEP_PICKUP_DATETIME::DATE
+ORDER BY
+	MAX(TRIP_DISTANCE) DESC
+LIMIT
+	1;
+```
 
 
 ## Question 5. Biggest pickup zone
 
 Which was the pickup zone with the largest `total_amount` (sum of all trips) on November 18th, 2025?
 
-- East Harlem North
+- East Harlem North ✅
 - East Harlem South
 - Morningside Heights
 - Forest Hills
+
+```SELECT
+	Z."Zone",
+	SUM(T."total_amount") AS TOTAL_SUM
+FROM
+	GREEN_TRIPS_DATA AS T
+	JOIN GREEN_TRIPS_TAXI_ZONE_LOOKUP AS Z ON T."PULocationID" = Z."LocationID"
+WHERE
+	T.LPEP_PICKUP_DATETIME::DATE = '2025-11-18'
+GROUP BY
+	Z."Zone"
+ORDER BY
+	TOTAL_SUM DESC
+LIMIT
+	1;
+```
+
 
 
 ## Question 6. Largest tip
@@ -138,9 +171,27 @@ For the passengers picked up in the zone named "East Harlem North" in November 2
 Note: it's `tip` , not `trip`. We need the name of the zone, not the ID.
 
 - JFK Airport
-- Yorkville West
+- Yorkville West ✅
 - East Harlem North
 - LaGuardia Airport
+
+```
+SELECT
+	ZDO."Zone" AS DROPOFF_ZONE,
+	MAX(T."tip_amount") AS MAX_TIP
+FROM
+	GREEN_TRIPS_DATA AS T
+	JOIN GREEN_TRIPS_TAXI_ZONE_LOOKUP AS ZPU ON T."PULocationID" = ZPU."LocationID"
+	JOIN GREEN_TRIPS_TAXI_ZONE_LOOKUP AS ZDO ON T."DOLocationID" = ZDO."LocationID"
+WHERE
+	ZPU."Zone" = 'East Harlem North'
+GROUP BY
+	ZDO."Zone"
+ORDER BY
+	MAX_TIP DESC
+LIMIT
+	1;
+```
 
 
 ## Terraform
@@ -165,63 +216,9 @@ Answers:
 - terraform import, terraform apply -y, terraform destroy
 - teraform init, terraform plan -auto-apply, terraform rm
 - terraform init, terraform run -auto-approve, terraform destroy
-- terraform init, terraform apply -auto-approve, terraform destroy
+- terraform init, terraform apply -auto-approve, terraform destroy ✅
 - terraform import, terraform apply -y, terraform rm
 
 
-## Submitting the solutions
-
-* Form for submitting: https://courses.datatalks.club/de-zoomcamp-2026/homework/hw1
-
-
-## Learning in Public
-
-We encourage everyone to share what they learned. This is called "learning in public".
-
-### Why learn in public?
-
-- Accountability: Sharing your progress creates commitment and motivation to continue
-- Feedback: The community can provide valuable suggestions and corrections
-- Networking: You'll connect with like-minded people and potential collaborators
-- Documentation: Your posts become a learning journal you can reference later
-- Opportunities: Employers and clients often discover talent through public learning
-
-You can read more about the benefits [here](https://alexeyondata.substack.com/p/benefits-of-learning-in-public-and).
-
-Don't worry about being perfect. Everyone starts somewhere, and people love following genuine learning journeys!
-
-### Example post for LinkedIn
-
-```
-🚀 Week 1 of Data Engineering Zoomcamp by @DataTalksClub complete!
-
-Just finished Module 1 - Docker & Terraform. Learned how to:
-
-✅ Containerize applications with Docker and Docker Compose
-✅ Set up PostgreSQL databases and write SQL queries
-✅ Build data pipelines to ingest NYC taxi data
-✅ Provision cloud infrastructure with Terraform
-
-Here's my homework solution: <LINK>
-
-Following along with this amazing free course - who else is learning data engineering?
-
-You can sign up here: https://github.com/DataTalksClub/data-engineering-zoomcamp/
-```
-
-### Example post for Twitter/X
-
-
-```
-🐳 Module 1 of Data Engineering Zoomcamp done!
-
-- Docker containers
-- Postgres & SQL
-- Terraform & GCP
-- NYC taxi data pipeline
-
-My solution: <LINK>
-
-Free course by @DataTalksClub: https://github.com/DataTalksClub/data-engineering-zoomcamp/
-```
-
+---------
+The solutions has also been adde as the `homework_solutions.sql` file
