@@ -89,7 +89,7 @@ In the output after running the backfill, the output for the uncompressed file w
 5) How many rows are there for the `Yellow` Taxi data for the March 2021 CSV file?
 - 1,428,092
 - 706,911
-- 1,925,152
+- 1,925,152 ✅
 - 2,561,031
 
 ![Question 5 Answer](./images/question-5.png)
