@@ -209,3 +209,5 @@ __marimo__/
 
 # Service account keys and credentials
 service-account.json
+gcs.json
+*.parquet
