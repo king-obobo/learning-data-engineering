@@ -1,0 +1,5 @@
+# Data directory
+data/
+target/
+dbt_packages/
+logs/
