@@ -219,3 +219,6 @@ dbt_packages/
 logs/
 *.csv
 *.duckdb
+*.csv.gz
+*.parquet
+*.crc
